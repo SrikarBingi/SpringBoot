@@ -33,4 +33,8 @@ public class OrderService {
         Order o = repo.findById(oid).orElseThrow(()->new OrderNotFoundException("Order not found with : "+oid));
         return o.getStatus();
     }
+
+    public List<Order> getOrdersByUid(Integer uid){
+        return repo.findByUid(uid);
+    }
 }

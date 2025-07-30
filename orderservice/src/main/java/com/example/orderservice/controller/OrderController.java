@@ -20,6 +20,11 @@ public class OrderController {
     @Autowired
     OrderService service;
 
+    @GetMapping("/greet")
+    public ResponseEntity<String> greet(){
+        return new ResponseEntity<String>("Hello from order service !!",HttpStatus.OK);
+    }
+
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getOrders(){
         return new ResponseEntity<List<Order>>(service.getOrders(), HttpStatus.OK);
@@ -38,5 +43,11 @@ public class OrderController {
     @GetMapping("/status/{oid}")
     public ResponseEntity<String> getStatuc(@PathVariable Integer oid){
         return new ResponseEntity<>(service.getStatus(oid), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/orders/{uid}")
+    public ResponseEntity<List<Order>> getOrdersByUid(@PathVariable Integer uid){
+        return new ResponseEntity<>(service.getOrdersByUid(uid), HttpStatus.OK);
     }
 }
