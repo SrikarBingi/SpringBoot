@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.tomcat.util.http.parser.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,13 +33,16 @@ public class UserController {
 
 	@Autowired
 	UserService service;
+
+	@Value("${orserservice.url}")
+	String orderservice;
 	
 	@Autowired
 	RestTemplate restTemplate;
 
 	@GetMapping(value="/hello")
 	public ResponseEntity<String> greet(){
-		String resp = restTemplate.getForObject("http://localhost:8087/greet", String.class);
+		String resp = restTemplate.getForObject(orderservice+"/greet", String.class);
 		return new ResponseEntity<String>(resp, HttpStatus.OK);
 	}
 
@@ -51,7 +55,7 @@ public class UserController {
 		userDto.setUname(user.getUname());
 		userDto.setAddr(user.getAddr());
 
-		List<OrderDto> orders = restTemplate.getForObject("http://localhost:8087/orders/"+uid, List.class);
+		List<OrderDto> orders = restTemplate.getForObject(orderservice+"/orders/"+uid, List.class);
 		userDto.setOrders(orders);
 
 		return new ResponseEntity<>(userDto, HttpStatus.OK);
